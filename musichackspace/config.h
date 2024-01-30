@@ -1,7 +1,7 @@
 #define PLUG_NAME "musichackspace"
 #define PLUG_MFR "alden"
-#define PLUG_VERSION_HEX 0x00000200
-#define PLUG_VERSION_STR "0.2.0"
+#define PLUG_VERSION_HEX 0x00000300
+#define PLUG_VERSION_STR "0.3.0"
 #define PLUG_UNIQUE_ID 'YW3w'
 #define PLUG_MFR_ID 'Acme'
 #define PLUG_URL_STR "https://iplug2.github.io"
