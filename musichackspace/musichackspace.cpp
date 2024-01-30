@@ -38,7 +38,7 @@ musichackspace::musichackspace(const InstanceInfo& info)
     
     pGraphics->LoadFont("Roboto-Regular", ROBOTO_FN);
     pGraphics->LoadFont("Logo", LOGO_FONT_FN);
-//    auto knobSVG = pGraphics->LoadSVG(BEFACO_TINYKNOB_FN); /* TASK_02 */
+    auto knobSVG = pGraphics->LoadSVG(BEFACO_TINYKNOB_FN); /* TASK_02 */
     auto sliderPotSVG = pGraphics->LoadSVG(BEFACO_SLIDEPOT_FN);
     auto sliderHandleSVG = pGraphics->LoadSVG(BEFACO_SLIDEPOTHANDLE_FN);
 
@@ -60,8 +60,8 @@ musichackspace::musichackspace(const InstanceInfo& info)
     /* ADD CONTROLS */
     
     // Background control, either a fixed color, gradient, svg or bitmap
-    pGraphics->AttachPanelBackground(COLOR_LIGHT_GRAY); /* TASK_01 */
-//    pGraphics->AttachPanelBackground(IPattern::CreateLinearGradient(bounds, EDirection::Vertical, {{COLOR_LIGHT_GRAY, 0.}, {COLOR_DARK_GRAY, 1.}}));
+    // pGraphics->AttachPanelBackground(COLOR_LIGHT_GRAY); /* TASK_01 */
+    pGraphics->AttachPanelBackground(IPattern::CreateLinearGradient(bounds, EDirection::Vertical, {{COLOR_ORANGE, 0.}, {COLOR_RED, 1.}}));
      
     // Group controls (background labels)
     pGraphics->AttachControl(new IVGroupControl(controlsArea, " ", 0.f));
@@ -94,13 +94,14 @@ musichackspace::musichackspace(const InstanceInfo& info)
     // Master controls
 
     /* TASK_03 -- insert some code here! */
+    pGraphics->AttachControl(new ITextControl(masterArea.GetGridCell(0, 1, 4).GetFromBottom(20.f), "Volume"));
     
-//    pGraphics->AttachControl(new ISVGKnobControl(masterArea.GetCentredInside(100), knobSVG, kParamGain)); /* TASK_02 */
+    pGraphics->AttachControl(new ISVGKnobControl(masterArea.GetCentredInside(100), knobSVG, kParamGain)); /* TASK_02 */
     
     // Keyboard
     pGraphics->AttachControl(new IVKeyboardControl(keyboardArea, 36, 64), kCtrlTagKeyboard);
 
-    pGraphics->AttachControl(new IVLabelControl(logoArea, "musichackspace", DEFAULT_STYLE.WithDrawFrame(false).WithValueText(IText(50., "Logo"))));
+    pGraphics->AttachControl(new IVLabelControl(logoArea, "musichackspace", DEFAULT_STYLE.WithDrawFrame(false).WithValueText(IText(24., "Logo"))));
     
     pGraphics->SetQwertyMidiKeyHandlerFunc([pGraphics](const IMidiMsg& msg) { pGraphics->GetControlWithTag(kCtrlTagKeyboard)->As<IVKeyboardControl>()->SetNoteFromMidi(msg.NoteNumber(), msg.StatusMsg() == IMidiMsg::kNoteOn); });
   };
@@ -113,14 +114,14 @@ void musichackspace::ProcessBlock(sample** inputs, sample** outputs, int nFrames
   mSynth.ProcessBlock(inputs, outputs, 0, 1, nFrames);
 
   /* TASK_02 */
-  /*
+  
   const double gain = GetParam(kParamGain)->Value() / 100.; // TASK_04
  
   for (int s = 0; s < nFrames; s++)
   {
     outputs[0][s] *= gain;
   }
-  */
+  
 
   // copy left hand channel audio to right hand channel
   memcpy(outputs[1], outputs[0], nFrames * sizeof(sample));
